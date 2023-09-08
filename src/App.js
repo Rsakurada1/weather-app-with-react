@@ -1,20 +1,49 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 import axios from "axios";
 
 
 function App() {
 
-const api = "https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=37a68e1a7debd2495d0e17b1d525cd13"
+  const [data, setData] = useState({});
+  const [location, setLocation] = useState('');
+  const [api, setApi] = useState('');
+
+  useEffect(() => {
+    setApi(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=37a68e1a7debd2495d0e17b1d525cd13`);
+  }, [location]);
+
+  const searchLocation = (event) => {
+    if (event.key === 'Enter') {
+      axios.get(api)
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+      console.error('API request failed', error);
+      })
+      setLocation('')
+    }
+  }
 
   return (
     <div className='app'>
+      <div className='search'>
+        <input
+        value={location}
+        onChange={event => setLocation(event.target.value)}
+        onKeyPress={searchLocation}
+        placeholder='Enter Location'
+        type='text'/>
+      </div>
       <div className="container">
         <div className="top">
         <div className="location">
           <p>Tokyo</p>
         </div>
         <div className="temp">
-          <h1>30°</h1>
+          <h1>30°C</h1>
         </div>
         <div className="description">
         <p>曇り</p>
@@ -22,7 +51,7 @@ const api = "https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=37a68
         </div>
         <div className="bottom">
         <div className="feel">
-          <p className='bold'>35°</p>
+          <p className='bold'>35°C</p>
           <p>体感温度</p>
         </div>
         <div className="humidity">
@@ -30,7 +59,7 @@ const api = "https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=37a68
           <p>湿度</p>
         </div>
         <div className="wind">
-          <p className='bold'>20m/s</p>
+          <p className='bold'>15m/s</p>
           <p>風速</p>
          </div>
         </div>
