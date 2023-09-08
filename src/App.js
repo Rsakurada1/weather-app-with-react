@@ -1,4 +1,5 @@
 import './App.css';
+import axios from "axios";
 
 
 function App() {
@@ -10,24 +11,27 @@ const api = "https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=37a68
       <div className="container">
         <div className="top">
         <div className="location">
-          <p>Tpkyo</p>
+          <p>Tokyo</p>
         </div>
         <div className="temp">
           <h1>30°</h1>
         </div>
         <div className="description">
-        <p>Clouds</p>
+        <p>曇り</p>
         </div>
         </div>
         <div className="bottom">
         <div className="feel">
-          <p>35°</p>
+          <p className='bold'>35°</p>
+          <p>体感温度</p>
         </div>
         <div className="humidity">
-          <p>20%</p>
+          <p className='bold'>20%</p>
+          <p>湿度</p>
         </div>
         <div className="wind">
-          12 MPH
+          <p className='bold'>20m/s</p>
+          <p>風速</p>
          </div>
         </div>
       </div>
