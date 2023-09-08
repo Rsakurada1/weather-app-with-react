@@ -1,3 +1,11 @@
+@import url(https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=37a68e1a7debd2495d0e17b1d525cd13);
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,7 +15,53 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+p {
+  font-size: 1.6rem;
+}
+
+h1 {
+  font-size: 6rem;
+}
+
+.app {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  color: #fff;
+   
+}
+
+.app:before {
+  content: '';
+  background: url('./aasets/weather_src.jpg')no-repeat center center/cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+
+.container {
+  max-width: 700px;
+  height: 700px;
+  margin: auto;
+  padding: 0 1rem;
+  position: relative;
+  top: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.app .top {
+  width: 100%;
+  margin: 1rem auto;
+}
+
+.app .description {
+  position: relative;
+  right: -90%;
+  transform-origin: 0 0;
+  transform: rotate(270deg);
 }
