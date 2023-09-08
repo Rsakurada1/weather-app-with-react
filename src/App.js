@@ -40,10 +40,10 @@ function App() {
       <div className="container">
         <div className="top">
         <div className="location">
-          <p>Tokyo</p>
+          <p>{data.name}</p>
         </div>
         <div className="temp">
-          <h1>30°C</h1>
+          <h1>{Math.round(data.main.temp) - 273}℃</h1>
         </div>
         <div className="description">
         <p>曇り</p>
