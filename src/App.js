@@ -31,6 +31,7 @@ function App() {
     if(event.key === 'Enter') {
       fetchWeatherData(location);
       setLocation('');
+      console.log(data)
     }
   };
 
@@ -53,20 +54,20 @@ function App() {
         <h1>{data.main ? Math.round(data.main.temp - 273.15) : 'Loading....'}℃</h1>
         </div>
         <div className="description">
-        <p>曇り</p>
+        <p>{data.weather && data.weather.length > 0 ? data.weather[0].main : 'Loading...'}</p>
         </div>
         </div>
         <div className="bottom">
         <div className="feel">
-          <p className='bold'>35°C</p>
-          <p>体感温度</p>
+          <p className='bold'>{data.main ? Math.round(data.main.feels_like - 273.15) : 'Loading....'}℃</p>
+          <p >体感温度</p>
         </div>
         <div className="humidity">
-          <p className='bold'>20%</p>
+          <p className='bold'>{data.main.humidity}%</p>
           <p>湿度</p>
         </div>
         <div className="wind">
-          <p className='bold'>15m/s</p>
+          <p className='bold'>{data.wind ? (data.wind.speed * 0.44704).toFixed(1) : 'Loading...'}m/s</p>
           <p>風速</p>
          </div>
         </div>
