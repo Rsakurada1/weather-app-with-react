@@ -14,11 +14,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setApi(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=37a68e1a7debd2495d0e17b1d525cd13`);
+    setApi(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`);
   }, [location]);
 
   const fetchWeatherData = (query) => {
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13`)
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`)
     .then((response) => {
       setData(response.data);
     })
@@ -42,7 +42,7 @@ function App() {
         value={location}
         onChange={event => setLocation(event.target.value)}
         onKeyPress={searchLocation}
-        placeholder='Enter Location'
+        placeholder='地域を検索'
         type='text'/>
       </div>
       <div className="container">
@@ -54,7 +54,15 @@ function App() {
         <h1>{data.main ? Math.round(data.main.temp - 273.15) : 'Loading....'}℃</h1>
         </div>
         <div className="description">
-        <p>{data.weather && data.weather.length > 0 ? data.weather[0].main : 'Loading...'}</p>
+        <p>{data.weather && data.weather.length > 0 ? data.weather[0].description : 'Loading...'}</p>
+        </div>
+        <div className='max'>
+            <p>最高</p>
+            <p>{data.main ? Math.round(data.main.temp_max - 273.15) : 'Loading....'}℃</p>
+        </div>
+        <div className="min">
+            <p>最低</p>
+            <p>{data.main ? Math.round(data.main.temp_min - 273.15) : 'Loading....'}℃</p>
         </div>
         </div>
         <div className="bottom">
@@ -63,7 +71,7 @@ function App() {
           <p >体感温度</p>
         </div>
         <div className="humidity">
-          <p className='bold'>{data.main.humidity}%</p>
+          <p className='bold'>{data.main ? `${data.main.humidity}%` : 'N/A'}</p>
           <p>湿度</p>
         </div>
         <div className="wind">
