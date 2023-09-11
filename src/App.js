@@ -6,6 +6,7 @@ import evening from './assets/evening.jpg'
 import rainy_night from './assets/rainy_night.jpg'
 import rainy from './assets/rainy.jpg'
 import sunny from './assets/sunny.jpg'
+import cloudy_night from './assets/cloudy_night.jpg'
 import './App.css';
 import axios from "axios";
 
@@ -20,9 +21,11 @@ const translateweatherDescription = (description) => {
     return translationMap[description] || description;
 };
 
+
 const getTimeDay = () => {
   const currentHour = new Date().getHours();
   if (currentHour >= 0 && currentHour < 6) {
+
     return 'morning';
 
   }else if (currentHour >= 6 && currentHour < 16){
@@ -85,14 +88,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (data.weather && data.weather.length > 0) {
-      const description = translateweatherDescription(data.weather[0].description);
-      const img = chooseBackgroundImage(description);
-      setCurrentBackgroundImage(`./assets/${img}`);
-    }
-  }, [data]);
-
-  useEffect(() => {
     setApi(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`);
   }, [location]);
 
@@ -108,7 +103,7 @@ function App() {
     if(event.key === 'Enter') {
       fetchWeatherData(location);
       setLocation('');
-      console.log(data)
+      console.log("★天候情報★", data.weather[0].description)
     }
   };
 
@@ -117,13 +112,56 @@ function App() {
     translateweatherDescription(data.weather[0].description) : 
     ''
   ); */
-    const randomImg = () => {
-      return Math.random() >= 0.5 ? cloudy : night
+
+/*   const setBkImg = () => {
+    const description = translateweatherDescription(data.weather[0].description)
+
+    if (description === '曇り'){
+  
+      if (getTimeDay === 'night'){
+  
+      return cloudy_night;
+  
+     }else{
+  
+      return night;
+     }
     }
+    else if (description === '晴れ'){
+        if (getTimeDay === 'morning'){
+  
+          return morning;
+  
+        }else if(getTimeDay === 'day'){
+  
+          return sunny;
+  
+        }else if(getTimeDay === 'evenig'){
+  
+          return evening;
+  
+        }else{
+  
+          return night;
+        }
+    }else if (description === '雨'){
+
+      if (getTimeDay === 'night'){
+
+        return rainy_night;
+
+      }else{
+
+        return rainy;
+      }
+    }
+    
+  }; */
+ 
   return (
     // < className='app' style={{ backgroundImage: `url(${currentBackgroundImage})`}}>
     <div className='app'>
-      <img className='bg-img' src={randomImg()} />
+      <img className='bg-img' src={sunny} />
       <div className='search'>
         <input
         value={location}
