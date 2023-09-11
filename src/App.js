@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import cloudy from './assets/cloudy.jpg';
 import night from './assets/night.jpg';
+import morning from './assets/morning.jpg'
+import evening from './assets/evening.jpg'
+import rainy_night from './assets/rainy_night.jpg'
+import rainy from './assets/rainy.jpg'
+import sunny from './assets/sunny.jpg'
 import './App.css';
 import axios from "axios";
 
