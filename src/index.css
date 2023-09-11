@@ -92,7 +92,7 @@ h1 {
 }
 
 .description {
-  top: -200px;
+  top: -500px;
   
 }
 
@@ -100,17 +100,23 @@ h1 {
   font-weight: 700;
 }
 
-.tempbox{
-  display: flex;
-  justify-content: flex-start;
-  position: relative;
-  top: -250px;
+.temp h1{
+  margin-top: -300px;
 }
 
-.temp h1{
-  margin-top: -110px;
+.max, .min {
+  display: inline-block;
+}
+
+.tempbox{
+  position: absolute;
+  margin-top: 220px;
+}
+
+.location {
+  margin-top: -300px;
 }
 
 .min {
-  margin-left: 100px;
+  margin-left: 30px;
 }

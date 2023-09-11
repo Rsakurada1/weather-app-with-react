@@ -10,8 +10,7 @@ const translateweatherDescription = (description) => {
       '厚い雲' : '曇り',
       '雲' : '曇り',
       '薄い雲' : '曇り',
-      '曇りがち' : '曇り',
-      '小雨' : '雨'
+      '曇りがち' : '曇り'
     };
     return translationMap[description] || description;
 };
@@ -107,10 +106,17 @@ function App() {
       console.log(data)
     }
   };
+
+   /* const backgroundImage = chooseBackgroundImage(
+    data.weather && data.weather.length > 0 ? 
+    translateweatherDescription(data.weather[0].description) : 
+    ''
+  ); */
     const randomImg = () => {
       return Math.random() >= 0.5 ? cloudy : night
     }
   return (
+    // < className='app' style={{ backgroundImage: `url(${currentBackgroundImage})`}}>
     <div className='app'>
       <img className='bg-img' src={randomImg()} />
       <div className='search'>
@@ -132,7 +138,7 @@ function App() {
         <div className="description">
         <p>{data.weather && data.weather.length > 0 ? translateweatherDescription(data.weather[0].description) : 'Loading...'}</p>
         </div>
-        <div className='tempbox'>
+        <div className="tempbox">
         <div className='max'>
             <p>最高</p>
             <p>{data.main ? Math.round(data.main.temp_max - 273.15) : 'Loading....'}℃</p>
