@@ -7,6 +7,9 @@ import rainy_night from "./assets/rainy_night.jpg";
 import rainy from "./assets/rainy.jpg";
 import sunny from "./assets/sunny.jpg";
 import cloudy_night from "./assets/cloudy_night.jpg";
+import snow from "./assets/snow2.jpg";
+import thunder from "./assets/thunder.jpg";
+import snow_night2 from "./assets/snow_night2.jpg"
 import "./App.css";
 import axios from "axios";
 
@@ -17,15 +20,29 @@ const translateweatherDescription = (description) => {
     雲: "曇り",
     薄い雲: "曇り",
     曇りがち: "曇り",
+    小雨: "雨",
+    適度な雨 : "雨",
+    大雨 : "雨",
+    非常に激しい雨 :"雨",
+    極端な雨:"雨",
+    凍る雨: "雨",
+    小雪: "雪",
+    大雪 : "雪",
+    不規則な雷雨 : "雷雨",
+    小雨を伴う雷雨: "雷雨",
+    大雨を伴う雷雨: "雷雨",
+    小霧雨を伴う雷雨: "雷雨",
+    大霧雨を伴う雷雨: "雷雨",
+    霧雨を伴う雷雨: "雷雨",
   };
   return translationMap[description] || description;
 };
 
 const getTimeDay = () => {
   const currentHour = new Date().getHours();
-  if (currentHour >= 0 && currentHour < 6) {
+  if (currentHour >= 6 && currentHour < 8) {
     return "morning";
-  } else if (currentHour >= 6 && currentHour < 16) {
+  } else if (currentHour >= 8 && currentHour < 16) {
     return "day";
   } else if (currentHour >= 16 && currentHour < 18) {
     return "evening";
@@ -51,14 +68,11 @@ function App() {
       setData(res.data);
       setIsLoading(false);
       console.log(isLoading)
+      console.log(res.data);
     } catch (e) {
       console.error("API request failed", e);
     }
   };
-
-  useEffect(() => {
-    console.log("isLoading changed:", isLoading);
-  }, [isLoading]);
 
   useEffect(() => {
     fetchWeatherData("Tokyo");
@@ -113,9 +127,16 @@ function App() {
       } else {
         return rainy;
       }
+    }else if (description === "雪") {
+      if (Time === "night") {
+        return snow_night2;
+      } else {
+        return snow;
+      }
+    }else if (description === "雷雨"){
+      return thunder;
     }
-
-  };
+  }
 
   return (
     <div className="app">
