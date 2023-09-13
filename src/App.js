@@ -35,22 +35,30 @@ const getTimeDay = () => {
 };
 
 function App() {
-  const [data, setData] = useState({});
-  const [location, setLocation] = useState("Tokyo");
-  const [api, setApi] = useState("");
+  const [ data, setData ] = useState({});
+  const [ location, setLocation ] = useState("Tokyo");
+  const [ api, setApi ] = useState("");
   const [ BkImg, setBkImg ] = useState({});
+  const [ isLoading, setIsLoading ] = useState(true);
 
   const fetchWeatherData = async (query) => {
     try {
+      setIsLoading(true);
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
       );
-      console.log("Fetched data: ", res.data);
+      console.log(isLoading);
       setData(res.data);
+      setIsLoading(false);
+      console.log(isLoading)
     } catch (e) {
       console.error("API request failed", e);
     }
   };
+
+  useEffect(() => {
+    console.log("isLoading changed:", isLoading);
+  }, [isLoading]);
 
   useEffect(() => {
     fetchWeatherData("Tokyo");
@@ -62,11 +70,6 @@ function App() {
     );
   }, [location]);
 
-  //debug用
-  useEffect(() => {
-    console.log("Current data: ", data);
-  });
-
   const searchLocation = (event) => {
     if (event.key === "Enter") {
       fetchWeatherData(location);
@@ -76,16 +79,16 @@ function App() {
   };
 
   useEffect(() => {
-    const newBkImg = getSetBkImg();
-    setBkImg(newBkImg);
-  }, [data])
-
+    if (data && data.weather && data.weather.length > 0) {
+      const newBkImg = getSetBkImg();
+      setBkImg(newBkImg);
+    }
+  }, [data]);
   
-
   const getSetBkImg = () => {
-    const description = translateweatherDescription(
-      data.weather[0].description
-    );
+    const description = data.weather && data.weather.length > 0 ?
+    translateweatherDescription(data.weather[0].description) : "";
+
     const Time = getTimeDay();
 
     if (description === "曇り") {
@@ -111,11 +114,17 @@ function App() {
         return rainy;
       }
     }
+
   };
 
   return (
     <div className="app">
-      <img className="bg-img" src={getSetBkImg()} />
+      {isLoading ? (
+        <img src="./assets/Loading.jpg"/>
+      ):(
+        <img className="bg-img" src={getSetBkImg()} />
+      )}
+  
       <div className="search">
         <input
           value={location}
