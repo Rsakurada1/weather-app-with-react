@@ -57,6 +57,7 @@ function App() {
   const [ api, setApi ] = useState("");
   const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
+  const [ hasError, setHasError ] = useState(false);
 
   const fetchWeatherData = async (query) => {
     try {
@@ -64,13 +65,16 @@ function App() {
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
       );
-      console.log(isLoading);
       setData(res.data);
+      setHasError(false);
       setIsLoading(false);
       console.log(isLoading)
       console.log(res.data);
     } catch (e) {
+      setHasError(true);
       console.error("API request failed", e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -86,10 +90,13 @@ function App() {
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
-      fetchWeatherData(location);
+      fetchWeatherData(location).then(() => {
+        if(!hasError) {
       setLocation("");
       console.log("★天候情報★", data.weather[0].description);
     }
+  });
+}
   };
 
   useEffect(() => {
@@ -141,11 +148,12 @@ function App() {
   return (
     <div className="app">
       {isLoading ? (
-        <img src="./assets/Loading.jpg"/>
+        <div>
+          <h1>now Loading...</h1>
+        </div>
       ):(
         <img className="bg-img" src={getSetBkImg()} />
       )}
-  
       <div className="search">
         <input
           value={location}
@@ -166,11 +174,22 @@ function App() {
           </h1>
         </div>
         <div className="description">
+          {hasError ? (
+            <div>
+              <p>
+               {data.weather && data.weather.length > 0
+              ? translateweatherDescription(data.weather[0].description)
+              : "Loading..."}
+              </p>
+            <p>入力した地域は対応しておりません。</p>
+            </div>
+          ) : (
           <p>
             {data.weather && data.weather.length > 0
               ? translateweatherDescription(data.weather[0].description)
               : "Loading..."}
           </p>
+          )}
         </div>
         <div className="tempbox">
           <div className="max">
