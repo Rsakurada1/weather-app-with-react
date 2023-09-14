@@ -10,8 +10,8 @@ import cloudy_night from "./assets/cloudy_night.jpg";
 import snow from "./assets/snow2.jpg";
 import thunder from "./assets/thunder.jpg";
 import snow_night2 from "./assets/snow_night2.jpg"
+import rainy_night2 from  "./assets/rainy_night2.jpg"
 import "./App.css";
-import Loader from 'react-loader-spinner';
 import { ThreeDots } from 'react-loader-spinner';
 import axios from "axios";
 
@@ -132,7 +132,7 @@ function App() {
       }
     } else if (description === "雨") {
       if (Time === "night") {
-        return rainy_night;
+        return rainy_night2;
       } else {
         return rainy;
       }
