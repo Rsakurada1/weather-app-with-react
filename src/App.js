@@ -11,6 +11,8 @@ import snow from "./assets/snow2.jpg";
 import thunder from "./assets/thunder.jpg";
 import snow_night2 from "./assets/snow_night2.jpg"
 import "./App.css";
+import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import axios from "axios";
 
 const translateweatherDescription = (description) => {
@@ -148,7 +150,10 @@ function App() {
   return (
     <div className="app">
       {isLoading ? (
-        <div>
+        <div className="Loading">
+           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <ThreeDots type="ThreeDots" color="#00BFFF" height={120} width={120} />
+            </div>
           <h1>now Loading...</h1>
         </div>
       ):(
