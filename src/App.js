@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import cloudy from "./assets/cloudy.jpg";
 import night from "./assets/night.jpg";
 import morning from "./assets/morning.jpg";
 import evening from "./assets/evening.jpg";
 import rainy_night from "./assets/rainy_night.jpg";
-import rainy from "./assets/rainy.jpg";
+import rainy from "./assets/rainy4.jpg";
 import sunny from "./assets/sunny.jpg";
 import cloudy_night from "./assets/cloudy_night.jpg";
 import snow from "./assets/snow2.jpg";
@@ -14,6 +15,19 @@ import rainy_night2 from  "./assets/rainy_night2.jpg"
 import "./App.css";
 import { ThreeDots } from 'react-loader-spinner';
 import axios from "axios";
+
+const filterTodayData = (data, todayStr) => {
+  return data.filter(item => item.dt_txt.startsWith(todayStr));
+};
+
+const filterFutureData = (data, todayStr) => {
+  return data.filter(item => !item.dt_txt.startsWith(todayStr));
+};
+
+const formatDate = (dateStr) => {
+  const parts = dateStr.split('-');
+  return `${parts[1]}/${parts[2]}`;
+};
 
 const translateweatherDescription = (description) => {
   const translationMap = {
@@ -53,6 +67,8 @@ const getTimeDay = () => {
   }
 };
 
+
+
 function App() {
   const [ data, setData ] = useState({});
   const [ location, setLocation ] = useState("Tokyo");
@@ -60,14 +76,18 @@ function App() {
   const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
   const [ hasError, setHasError ] = useState(false);
+  const [ hourlyData, setHourlyData ] = useState({today: [], future: []});
+  const [ todayData, setTodayData ] = useState(null);
 
-  const fetchWeatherData = async (query) => {
+
+  async function fetchWeatherData (query) {
     try {
       setIsLoading(true);
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
       );
       setData(res.data);
+      setTodayData(res.data);
       setHasError(false);
       setIsLoading(false);
       console.log(isLoading)
@@ -80,8 +100,28 @@ function App() {
     }
   };
 
+async function fetchWeatherHoursData(query, todayStr)  {
+  try {
+    const res = await axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
+    );
+    setHasError(false);
+    const todayData = filterTodayData(res.data.list, todayStr);
+    const futureData = filterFutureData(res.data.list, todayStr);
+    setHourlyData({today: todayData, future: futureData});
+  }catch(e) {
+    setHasError(true);
+    console.error("Hourly API request failed", e);
+  } finally{
+    setIsLoading(false);
+  }
+};
+
   useEffect(() => {
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     fetchWeatherData("Tokyo");
+    fetchWeatherHoursData("Tokyo", todayStr);
   }, []);
 
   useEffect(() => {
@@ -175,7 +215,7 @@ function App() {
         </div>
         <div className="temp">
           <h1>
-            {data.main ? Math.round(data.main.temp - 273.15) : "Loading...."}℃
+            {data && data.main ? Math.round(data.main.temp - 273.15) : "Loading...."}℃
           </h1>
         </div>
         <div className="description">
@@ -216,6 +256,17 @@ function App() {
             </p>
           </div>
         </div>
+        <div> 
+        <div>
+          <h3>今日のデータ</h3>
+          {hourlyData.today && hourlyData.today.map((data, index) => (
+            <div key={index}>
+              <span>{parseInt(data.dt_txt.split(' ')[1].split(':')[0], 10)}時</span>
+              <span>気温: {Math.round(data.main.temp - 273.15)}℃</span>
+            </div>
+          ))}
+        </div>
+      </div>
       </div>
       <div className="bottom">
         <div className="feel">
@@ -239,6 +290,19 @@ function App() {
           <p>風速</p>
         </div>
       </div>
+      <div>
+          <h3>明日以降のデータ</h3>
+          {hourlyData.future && hourlyData.future.map((data, index) => {
+            const dateStr = data.dt_txt.split(' ')[0];
+            const formattedDate = formatDate(dateStr);
+            return (
+              <div key={index}>
+                <span>日付: {formattedDate}</span>
+                <span>気温: {Math.round(data.main.temp - 273.15)}℃</span>
+              </div>
+            );
+          })}
+        </div>
     </div>
   );
 }
