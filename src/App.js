@@ -15,7 +15,7 @@ import rainy_night2 from  "./assets/rainy_night2.jpg"
 import "./App.css";
 import { ThreeDots } from 'react-loader-spinner';
 import axios from "axios";
-
+ 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
 };
