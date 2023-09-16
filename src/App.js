@@ -99,6 +99,8 @@ function App() {
   const [ hasError, setHasError ] = useState(false);
   const [ hourlyData, setHourlyData ] = useState({today: [], future: []});
   const [ todayData, setTodayData ] = useState(null);
+  const [uniqueDates, setUniqueDates] = useState(new Set());
+ 
 
 
   async function fetchWeatherData (query) {
@@ -154,12 +156,16 @@ async function fetchWeatherHoursData(query, todayStr)  {
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
       fetchWeatherData(location).then(() => {
         if(!hasError) {
       setLocation("");
       console.log("★天候情報★", data.weather[0].description);
     }
   });
+  fetchWeatherHoursData(location, todayStr);
 }
   };
 
@@ -169,6 +175,17 @@ async function fetchWeatherHoursData(query, todayStr)  {
       setBkImg(newBkImg);
     }
   }, [data]);
+
+  useEffect(() => {
+    const newUniqueDates = new Set();
+    hourlyData.future.forEach((data) => {
+      const dateStr = data.dt_txt.split(' ')[0];
+      const formattedDate = formatDate(dateStr); 
+      newUniqueDates.add(formattedDate);
+    });
+    console.log("New Unique Dates:", Array.from(newUniqueDates));
+    setUniqueDates(newUniqueDates);
+  }, [hourlyData.future]);
   
   const getSetBkImg = () => {
     const description = data.weather && data.weather.length > 0 ?
@@ -280,7 +297,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
         </div>
         <div> 
         <div className="todayDescriptionData">
-        <h4>3時間ごとの天気</h4>
+        <h3>3時間ごとの天気</h3>
         <div className="flex-container-all"> 
         {hourlyData.today && hourlyData.today.map((data, index) => (
           <div key={index} className="flex-container"> 
@@ -315,18 +332,27 @@ async function fetchWeatherHoursData(query, todayStr)  {
           <p>風速</p>
         </div>
       </div>
+      <div>
       <div className="futureDescriptionData">
-          <h3>明日以降のデータ</h3>
+          <h3>明日以降の天気</h3>
+          <div className="future-flex-container-all">
           {hourlyData.future && hourlyData.future.map((data, index) => {
             const dateStr = data.dt_txt.split(' ')[0];
-            const formattedDate = formatDate(dateStr);
-            return (
-              <div key={index}>
-                <span>日付: {formattedDate}</span>
-                <span>気温: {Math.round(data.main.temp - 273.15)}℃</span>
-              </div>
-            );
+            const formattedDate = formatDate(dateStr);            
+            if (!uniqueDates.has(formattedDate)) {
+              uniqueDates.add(formattedDate);  
+              return (
+                <div key={index} className="future-flex-container">
+                  <span> {formattedDate}</span>
+                  <span> {Math.round(data.main.temp - 273.15)}℃</span>
+                  <span>{getWeatherIcon(data.weather[0].description)}</span>
+                </div>
+              );
+            }
+            return null;  
           })}
+          </div>
+        </div>
         </div>
     </div>
   );

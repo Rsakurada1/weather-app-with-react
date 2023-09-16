@@ -107,7 +107,7 @@ h1 {
 }
 
 .temp h1{
-  margin-top: -160px;
+  margin-top: -180px;
 }
 
 .max, .min {
@@ -136,4 +136,18 @@ h1 {
 
 .flex-container-all {
   display: flex;
+  justify-content: flex-start; 
+}
+
+.todayDescriptionData{
+  position: relative;
+  top: -280px;
+}
+
+.flex-container-all {
+  justify-content: flex-start;  
+}
+
+.flex-container {
+  margin-right: 30px; 
 }
