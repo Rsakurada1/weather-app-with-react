@@ -14,6 +14,7 @@ import snow_night2 from "./assets/snow_night2.jpg"
 import rainy_night2 from  "./assets/rainy_night2.jpg"
 import "./App.css";
 import { ThreeDots } from 'react-loader-spinner';
+import 'font-awesome/css/font-awesome.min.css';
 import axios from "axios";
  
 const filterTodayData = (data, todayStr) => {
@@ -53,6 +54,26 @@ const translateweatherDescription = (description) => {
   };
   return translationMap[description] || description;
 };
+
+const getWeatherIcon = (weatherDescription) => {
+  const translatedDescription = translateweatherDescription(weatherDescription);
+
+  switch (translatedDescription) {
+    case '晴れ':
+      return <i className="fa fa-sun-o"></i>;
+    case '曇り':
+      return <i className="fa fa-cloud"></i>;
+    case '雨':
+      return <i className="fa fa-tint"></i>;
+    case '雪':
+      return <i className="fa fa-snowflake-o"></i>
+    case '雷雨':
+      return <i className="fa fa-bolt"></i>
+    default:
+      return <i className="fa fa-question-circle"></i>;
+  }
+}; 
+
 
 const getTimeDay = () => {
   const currentHour = new Date().getHours();
@@ -109,6 +130,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
     const todayData = filterTodayData(res.data.list, todayStr);
     const futureData = filterFutureData(res.data.list, todayStr);
     setHourlyData({today: todayData, future: futureData});
+    console.log(res.data);
   }catch(e) {
     setHasError(true);
     console.error("Hourly API request failed", e);
@@ -257,15 +279,18 @@ async function fetchWeatherHoursData(query, todayStr)  {
           </div>
         </div>
         <div> 
-        <div>
-          <h3>今日のデータ</h3>
-          {hourlyData.today && hourlyData.today.map((data, index) => (
-            <div key={index}>
-              <span>{parseInt(data.dt_txt.split(' ')[1].split(':')[0], 10)}時</span>
-              <span>気温: {Math.round(data.main.temp - 273.15)}℃</span>
-            </div>
-          ))}
-        </div>
+        <div className="todayDescriptionData">
+        <h4>3時間ごとの天気</h4>
+        <div className="flex-container-all"> 
+        {hourlyData.today && hourlyData.today.map((data, index) => (
+          <div key={index} className="flex-container"> 
+            <span>{parseInt(data.dt_txt.split(' ')[1].split(':')[0], 10)}時</span>
+            <span>{Math.round(data.main.temp - 273.15)}℃</span>
+            <span>{getWeatherIcon(data.weather[0].description)}</span>
+          </div>
+        ))}
+      </div>
+      </div>
       </div>
       </div>
       <div className="bottom">
@@ -290,7 +315,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
           <p>風速</p>
         </div>
       </div>
-      <div>
+      <div className="futureDescriptionData">
           <h3>明日以降のデータ</h3>
           {hourlyData.future && hourlyData.future.map((data, index) => {
             const dateStr = data.dt_txt.split(' ')[0];
