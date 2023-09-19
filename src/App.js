@@ -58,21 +58,36 @@ const translateweatherDescription = (description) => {
 const getWeatherIcon = (weatherDescription) => {
   const translatedDescription = translateweatherDescription(weatherDescription);
 
+  let icon, iconColor;
   switch (translatedDescription) {
     case '晴れ':
-      return <i className="fa fa-sun-o"></i>;
+      icon = "fa fa-sun-o";
+      iconColor = "orange";
+      break;
     case '曇り':
-      return <i className="fa fa-cloud"></i>;
+      icon = "fa fa-cloud";
+      iconColor = "white";
+      break;
     case '雨':
-      return <i className="fa fa-tint"></i>;
+      icon = "fa fa-tint";
+      iconColor = "blue";
+      break;
     case '雪':
-      return <i className="fa fa-snowflake-o"></i>
+      icon = "fa fa-snowflake-o";
+      iconColor = "lightblue";
+      break;
     case '雷雨':
-      return <i className="fa fa-bolt"></i>
+      icon = "fa fa-bolt";
+      iconColor = "yellow";
+      break;
     default:
-      return <i className="fa fa-question-circle"></i>;
+      icon = "fa fa-question-circle";
+      iconColor = "black";
+      break;
   }
-}; 
+
+  return <i className={icon} style={{ color: iconColor }}></i>;
+};
 
 
 const getTimeDay = () => {
