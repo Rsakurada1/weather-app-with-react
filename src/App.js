@@ -296,7 +296,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
           </div>
         </div>
         <div> 
-        <div className="todayDescriptionData">
+        <div className="DescriptionData">
         <h3>3時間ごとの天気</h3>
         <div className="flex-container-all"> 
         {hourlyData.today && hourlyData.today.map((data, index) => (
@@ -333,16 +333,16 @@ async function fetchWeatherHoursData(query, todayStr)  {
         </div>
       </div>
       <div>
-      <div className="futureDescriptionData">
+      <div className="DescriptionData">
           <h3>明日以降の天気</h3>
-          <div className="future-flex-container-all">
+          <div className="flex-container-all">
           {hourlyData.future && hourlyData.future.map((data, index) => {
             const dateStr = data.dt_txt.split(' ')[0];
             const formattedDate = formatDate(dateStr);            
             if (!uniqueDates.has(formattedDate)) {
               uniqueDates.add(formattedDate);  
               return (
-                <div key={index} className="future-flex-container">
+                <div key={index} className="flex-container">
                   <span> {formattedDate}</span>
                   <span> {Math.round(data.main.temp - 273.15)}℃</span>
                   <span>{getWeatherIcon(data.weather[0].description)}</span>
