@@ -4,7 +4,6 @@ import cloudy from "./assets/cloudy.jpg";
 import night from "./assets/night.jpg";
 import morning from "./assets/morning.jpg";
 import evening from "./assets/evening3.jpg";
-import rainy_night from "./assets/rainy_night.jpg";
 import rainy from "./assets/rainy4.jpg";
 import sunny from "./assets/sunny.jpg";
 import cloudy_night from "./assets/cloudy_night.jpg";
@@ -16,7 +15,9 @@ import "./App.css";
 import { ThreeDots } from 'react-loader-spinner';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from "axios";
- 
+import Sidebar from './Sidebar';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
 };
@@ -115,6 +116,7 @@ function App() {
   const [ hourlyData, setHourlyData ] = useState({today: [], future: []});
   const [ todayData, setTodayData ] = useState(null);
   const [ uniqueDates, setUniqueDates ] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
  
 
 
@@ -242,6 +244,10 @@ async function fetchWeatherHoursData(query, todayStr)  {
       return thunder;
     }
   }
+  //バーの管理
+  const handleSidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
     <div className="app">
@@ -250,11 +256,18 @@ async function fetchWeatherHoursData(query, todayStr)  {
            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <ThreeDots type="ThreeDots" color="#00BFFF" height={120} width={120} />
             </div>
-          <h1>now Loading...</h1>
         </div>
       ):(
         <img className="bg-img" src={getSetBkImg()} />
       )}
+      <div>
+      <div className="Bar">
+      <button onClick={handleSidebarToggle} className="toggle-button">
+        ☰
+      </button>
+      <Sidebar open={sidebarOpen} />
+    </div>
+      </div>
       <div className="search">
         <input
           value={location}

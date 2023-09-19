@@ -53,6 +53,10 @@ h1 {
   color: #f8f8f8;
 }
 
+.search{
+  position: relative;
+  top: 80px;
+}
 
 
 ::placeholder {
