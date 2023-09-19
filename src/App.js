@@ -99,7 +99,7 @@ function App() {
   const [ hasError, setHasError ] = useState(false);
   const [ hourlyData, setHourlyData ] = useState({today: [], future: []});
   const [ todayData, setTodayData ] = useState(null);
-  const [uniqueDates, setUniqueDates] = useState(new Set());
+  const [uniqueDates, setUniqueDates] = useState([]);
  
 
 
@@ -177,11 +177,13 @@ async function fetchWeatherHoursData(query, todayStr)  {
   }, [data]);
 
   useEffect(() => {
-    const newUniqueDates = new Set();
+    const newUniqueDates = [];
     hourlyData.future.forEach((data) => {
       const dateStr = data.dt_txt.split(' ')[0];
       const formattedDate = formatDate(dateStr); 
-      newUniqueDates.add(formattedDate);
+      if (!newUniqueDates.includes(formattedDate)){
+      newUniqueDates.push(formattedDate);
+    }
     });
     console.log("New Unique Dates:", Array.from(newUniqueDates));
     setUniqueDates(newUniqueDates);
@@ -333,24 +335,23 @@ async function fetchWeatherHoursData(query, todayStr)  {
         </div>
       </div>
       <div>
-      <div className="DescriptionData">
+      <div className="future-DescriptionData">
           <h3>明日以降の天気</h3>
-          <div className="flex-container-all">
-          {hourlyData.future && hourlyData.future.map((data, index) => {
-            const dateStr = data.dt_txt.split(' ')[0];
-            const formattedDate = formatDate(dateStr);            
-            if (!uniqueDates.has(formattedDate)) {
-              uniqueDates.add(formattedDate);  
+          <div className="future-flex-container-all">
+              {uniqueDates.map((uniqueDate, index) => {
+              const firstDataOfTheDay = hourlyData.future.find((data) => {
+              const dateStr = data.dt_txt.split(' ')[0];
+              const formattedDate = formatDate(dateStr);
+              return formattedDate === uniqueDate;
+              });
               return (
-                <div key={index} className="flex-container">
-                  <span> {formattedDate}</span>
-                  <span> {Math.round(data.main.temp - 273.15)}℃</span>
-                  <span>{getWeatherIcon(data.weather[0].description)}</span>
+                <div key={index} className="future-flex-container">
+                  <span>{uniqueDate}</span>
+                  <span>{Math.round(firstDataOfTheDay.main.temp - 273.15)}℃</span>
+                  <span>{getWeatherIcon(firstDataOfTheDay.weather[0].description)}</span>
                 </div>
               );
-            }
-            return null;  
-          })}
+            })}
           </div>
         </div>
         </div>

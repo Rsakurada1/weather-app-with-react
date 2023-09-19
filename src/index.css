@@ -134,20 +134,42 @@ h1 {
   margin-right: 20px;
 }
 
-.flex-container-all {
-  display: flex;
-  justify-content: flex-start; 
-}
-
 .DescriptionData{
   position: relative;
   top: -280px;
 }
 
 .flex-container-all {
-  justify-content: flex-start;  
+  display: flex;
+  justify-content: flex-start; 
 }
+
 
 .flex-container {
   margin-right: 30px; 
+}
+
+.future-flex-container-all {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 10px;
+}
+
+
+.future-flex-container {
+  margin-right: 30px; 
+}
+
+
+.future-flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.future-DescriptionData{
+    position: relative;
+    left: 175px;
+    
 }
