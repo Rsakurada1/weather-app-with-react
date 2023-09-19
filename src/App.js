@@ -114,7 +114,7 @@ function App() {
   const [ hasError, setHasError ] = useState(false);
   const [ hourlyData, setHourlyData ] = useState({today: [], future: []});
   const [ todayData, setTodayData ] = useState(null);
-  const [uniqueDates, setUniqueDates] = useState([]);
+  const [ uniqueDates, setUniqueDates ] = useState([]);
  
 
 
@@ -354,6 +354,10 @@ async function fetchWeatherHoursData(query, todayStr)  {
           <h3>明日以降の天気</h3>
           <div className="future-flex-container-all">
               {uniqueDates.map((uniqueDate, index) => {
+              const [ month, day ] = uniqueDate.split('/');
+              const cleanMonth = parseInt(month, 10);
+              const cleanDay = parseInt(day, 10);
+              const cleanUniqueDate =`${cleanMonth}/${cleanDay}`;
               const firstDataOfTheDay = hourlyData.future.find((data) => {
               const dateStr = data.dt_txt.split(' ')[0];
               const formattedDate = formatDate(dateStr);
@@ -361,7 +365,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
               });
               return (
                 <div key={index} className="future-flex-container">
-                  <span>{uniqueDate}</span>
+                  <span>{cleanUniqueDate}</span>
                   <span>{Math.round(firstDataOfTheDay.main.temp - 273.15)}℃</span>
                   <span>{getWeatherIcon(firstDataOfTheDay.weather[0].description)}</span>
                 </div>
