@@ -16,7 +16,10 @@ import { ThreeDots } from 'react-loader-spinner';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from "axios";
 import Sidebar from './Sidebar';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import "./firebase"
 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
@@ -44,6 +47,9 @@ const translateweatherDescription = (description) => {
     非常に激しい雨 :"雨",
     極端な雨:"雨",
     凍る雨: "雨",
+    弱いにわか雨: "雨",
+    にわか雨: "雨",
+    強いにわか雨: "雨",
     小雪: "雪",
     大雪 : "雪",
     不規則な雷雨 : "雷雨",
@@ -117,6 +123,7 @@ function App() {
   const [ todayData, setTodayData ] = useState(null);
   const [ uniqueDates, setUniqueDates ] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
  
 
 
