@@ -123,6 +123,7 @@ function App() {
   const [ todayData, setTodayData ] = useState(null);
   const [ uniqueDates, setUniqueDates ] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [ isAuth, setIsAuth ] = useState(false);
   
  
 
@@ -272,7 +273,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
       <button onClick={handleSidebarToggle} className="toggle-button">
         ☰
       </button>
-      <Sidebar open={sidebarOpen} />
+      <Sidebar setIsAuth={setIsAuth} open={sidebarOpen} />
     </div>
       </div>
       <div className="search">
