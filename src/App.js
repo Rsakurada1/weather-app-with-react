@@ -20,6 +20,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import "./firebase"
+import { auth } from "./firebase";
 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
@@ -165,7 +166,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
     setIsLoading(false);
   }
 };
-
+  //初期値を東京、文字列の整理
   useEffect(() => {
     const today = new Date();
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
@@ -173,12 +174,14 @@ async function fetchWeatherHoursData(query, todayStr)  {
     fetchWeatherHoursData("Tokyo", todayStr);
   }, []);
 
+  //検索した際に検索した地域のリクエスト
   useEffect(() => {
     setApi(
       `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
     );
   }, [location]);
 
+  //文字列の整理
   const searchLocation = (event) => {
     if (event.key === "Enter") {
       const today = new Date();
@@ -213,6 +216,23 @@ async function fetchWeatherHoursData(query, todayStr)  {
     console.log("New Unique Dates:", Array.from(newUniqueDates));
     setUniqueDates(newUniqueDates);
   }, [hourlyData.future]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        localStorage.setItem("isAuth", true);
+        setIsAuth(true);
+      } else {
+        localStorage.removeItem("isAuth");
+        setIsAuth(false);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    }
+  }, []);
+
   
   const getSetBkImg = () => {
     const description = data.weather && data.weather.length > 0 ?
