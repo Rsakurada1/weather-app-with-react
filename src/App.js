@@ -115,7 +115,7 @@ const getTimeDay = () => {
 
 function App() {
   const [ data, setData ] = useState({});
-  const [ location, setLocation ] = useState("Tokyo");
+  const [ location, setLocation ] = useState(null);
   const [ api, setApi ] = useState("");
   const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
