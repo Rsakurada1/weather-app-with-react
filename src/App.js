@@ -16,13 +16,11 @@ import { ThreeDots } from 'react-loader-spinner';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from "axios";
 import Sidebar from './Sidebar';
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import "./firebase"
 import { auth } from "./firebase";
 import StarIcon from "./StarIcon";
-import FavoriteList from "./FavoriteList";
 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));

@@ -16,7 +16,6 @@
     margin: 10px;
   }
   
-  /* サイドバーを表示するときは元の位置に戻す */
   .sidebar.open {
     transform: translateX(0); 
   }
