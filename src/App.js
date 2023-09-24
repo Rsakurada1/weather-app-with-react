@@ -21,6 +21,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import "./firebase"
 import { auth } from "./firebase";
+import StarIcon from "./StarIcon";
 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
@@ -42,6 +43,7 @@ const translateweatherDescription = (description) => {
     雲: "曇り",
     薄い雲: "曇り",
     曇りがち: "曇り",
+    霧: "曇り",
     小雨: "雨",
     適度な雨 : "雨",
     大雨 : "雨",
@@ -115,7 +117,7 @@ const getTimeDay = () => {
 
 function App() {
   const [ data, setData ] = useState({});
-  const [ location, setLocation ] = useState(null);
+  const [ location, setLocation ] = useState("tokyo");
   const [ api, setApi ] = useState("");
   const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
@@ -125,6 +127,8 @@ function App() {
   const [ uniqueDates, setUniqueDates ] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [ isAuth, setIsAuth ] = useState(false);
+  const [inputLocation, setInputLocation] = useState("");
+  const [searchedLocation, setSearchedLocation] = useState(null);
   
  
 
@@ -139,8 +143,6 @@ function App() {
       setTodayData(res.data);
       setHasError(false);
       setIsLoading(false);
-      console.log(isLoading)
-      console.log(res.data);
     } catch (e) {
       setHasError(true);
       console.error("API request failed", e);
@@ -170,8 +172,8 @@ async function fetchWeatherHoursData(query, todayStr)  {
   useEffect(() => {
     const today = new Date();
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    fetchWeatherData("Tokyo");
-    fetchWeatherHoursData("Tokyo", todayStr);
+    fetchWeatherData("tokyo");
+    fetchWeatherHoursData("tokyo", todayStr);
   }, []);
 
   //検索した際に検索した地域のリクエスト
@@ -184,16 +186,17 @@ async function fetchWeatherHoursData(query, todayStr)  {
   //文字列の整理
   const searchLocation = (event) => {
     if (event.key === "Enter") {
+      setSearchedLocation(inputLocation);
       const today = new Date();
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-      fetchWeatherData(location).then(() => {
+      fetchWeatherData(inputLocation).then(() => {
         if(!hasError) {
-      setLocation("");
-      console.log("★天候情報★", data.weather[0].description);
+      setLocation(inputLocation);
+      setInputLocation("");
     }
   });
-  fetchWeatherHoursData(location, todayStr);
+  fetchWeatherHoursData(inputLocation, todayStr);
 }
   };
 
@@ -293,13 +296,14 @@ async function fetchWeatherHoursData(query, todayStr)  {
       <button onClick={handleSidebarToggle} className="toggle-button">
         ☰
       </button>
-      <Sidebar setIsAuth={setIsAuth} open={sidebarOpen} />
+      <Sidebar open={sidebarOpen} />
     </div>
       </div>
+      <StarIcon isAuth={isAuth} location={location} />
       <div className="search">
         <input
-          value={location}
-          onChange={(event) => setLocation(event.target.value)}
+          value={inputLocation}
+          onChange={(e) => setInputLocation(e.target.value)}
           onKeyPress={searchLocation}
           placeholder="地域を検索"
           type="text"

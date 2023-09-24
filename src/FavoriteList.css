@@ -1,0 +1,10 @@
+.favorite-list {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+  }
+
+  .favorite-list li {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }

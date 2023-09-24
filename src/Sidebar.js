@@ -3,11 +3,12 @@ import './Sidebar.css';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import FavoriteList from './FavoriteList';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, provider } from './firebase';
 
 
-function Sidebar({ setIsAuth, open }) {
+function Sidebar({ open }) {
 
   const isAuth = localStorage.getItem("isAuth") === "true";
 
@@ -24,7 +25,8 @@ function Sidebar({ setIsAuth, open }) {
     const logoutInWithGoogle = () => {
       auth.signOut().then(() => {
         localStorage.removeItem("isAuth");
-        setIsAuth(false);
+        localStorage.removeItem('doNotShowMessage');
+        alert("ログアウトしました");
       });
     };
 
@@ -33,7 +35,7 @@ function Sidebar({ setIsAuth, open }) {
       {isAuth ? (
         <>
         <button className='login-list' onClick={logoutInWithGoogle}>ログアウト</button>
-        <button className='fav-list'>お気に入りリスト</button>  
+        <FavoriteList />  
         </>
       ) : (
         <button className='login-list' onClick={loginInWithGoogle}>Googleでログイン</button>
