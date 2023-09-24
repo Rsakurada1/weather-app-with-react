@@ -13,6 +13,7 @@
     transition: transform 0.4s ease;
     transform: translateX(-250px);
     color: white;
+    margin: 10px;
   }
   
   /* サイドバーを表示するときは元の位置に戻す */
@@ -31,15 +32,14 @@
     margin-top: 20px;
 }
 
-
-.sidebar button:hover {
-  color: #ffffff8e; /* ホバー時の文字色 */
-}
-  
 .sidebar button:focus {
   outline: none;
 }
 
 .fav-list{
   z-index: 1;
+}
+
+.login-list {
+  margin-bottom: 20px; /* 任意の値に設定 */
 }
