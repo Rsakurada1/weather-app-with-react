@@ -6,7 +6,7 @@ import { auth, db } from './firebase';
 
 
 
-const StarIcon = ( {isAuth, location} ) => {
+const StarIcon = ( {isAuth, location, hasError} ) => {
     console.log("isAuth:", isAuth);
     console.log("location初期値", location);
     const [ isFavorite, setIsFavorite] = useState(false);
@@ -25,7 +25,12 @@ const StarIcon = ( {isAuth, location} ) => {
   }, [location, isAuth]);
 
     //お気に入りリストへの追加処理
+    
     const addFavLocation = async () => {
+      if(hasError){
+        alert("有効な地域名を入力してください")
+        return false;
+      }
         try {
             await addDoc(collection(db, "weather"), {
               Location: location,
@@ -35,9 +40,13 @@ const StarIcon = ( {isAuth, location} ) => {
               }
             });
             console.log('Document added');
+            return true;
+
           } catch (e) {
             console.error('Error adding document: ', e);
+            return false;
           }
+       
         };
         
         //お気に入りリストから該当する地域の削除
@@ -56,30 +65,29 @@ const StarIcon = ( {isAuth, location} ) => {
           }
         };   
 
-    const clickStar = () => {
+    const clickStar = async() => {
       if (!isAuth) {
         alert("お気に入りリストに追加/削除するにはログインをしてください");
-        return;
+        return false;
       }
 
     if (isFavorite) {
-        removeFavLocation();
+        await removeFavLocation();
         alert("お気に入りリストから削除しました。"); 
+        setIsFavorite(false);
       } else {
-        addFavLocation();
-
-        const shouldShowMessage = localStorage.getItem('doNotShowMessage') !== 'true';
-
-        if (shouldShowMessage) {
-            const userChoice = window.confirm('お気に入りリストに追加しました。今後このメッセージを表示しない場合は、OKをクリックしてください。');
-
-            if (userChoice) {
-                localStorage.setItem('doNotShowMessage', 'true');
+       const isSuccess = await addFavLocation();
+    if (isSuccess) {
+      const shouldShowMessage = localStorage.getItem('doNotShowMessage') !== 'true';
+      if (shouldShowMessage) {
+        const userChoice = window.confirm('お気に入りリストに追加しました。今後このメッセージを表示しない場合は、OKをクリックしてください。');
+        if (userChoice) {
+          localStorage.setItem('doNotShowMessage', 'true');
             }
         }
+        setIsFavorite(true);
     }
-
-    setIsFavorite(prevState => !prevState);
+  }
 }
 
   return (

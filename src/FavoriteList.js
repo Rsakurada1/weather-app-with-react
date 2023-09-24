@@ -3,7 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase'; // Firestoreのインスタンスをインポート
 import "./FavoriteList.css"
 
-const FavoriteList = () => {
+const FavoriteList = ({onFavoriteClick}) => {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const FavoriteList = () => {
         <h5>お気に入りリスト</h5>
       <ul className='favorite-list'>
         {favorites.map((location, index) => (
-          <li key={index}>{location}</li>
+          <li key={index} onClick={() => onFavoriteClick(location)}>{location}</li>
         ))}
       </ul>
     </div>

@@ -8,7 +8,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, provider } from './firebase';
 
 
-function Sidebar({ open }) {
+function Sidebar({ open, setLocation, fetchWeatherData, fetchWeatherHoursData }) {
 
   const isAuth = localStorage.getItem("isAuth") === "true";
 
@@ -35,7 +35,15 @@ function Sidebar({ open }) {
       {isAuth ? (
         <>
         <button className='login-list' onClick={logoutInWithGoogle}>ログアウト</button>
-        <FavoriteList />  
+        <FavoriteList 
+        onFavoriteClick={(location) => {
+          setLocation(location);
+          const today = new Date();
+          const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+          fetchWeatherData(location);
+          fetchWeatherHoursData(location, todayStr);
+        }}
+        />  
         </>
       ) : (
         <button className='login-list' onClick={loginInWithGoogle}>Googleでログイン</button>

@@ -22,6 +22,7 @@ import 'firebase/firestore';
 import "./firebase"
 import { auth } from "./firebase";
 import StarIcon from "./StarIcon";
+import FavoriteList from "./FavoriteList";
 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
@@ -296,10 +297,17 @@ async function fetchWeatherHoursData(query, todayStr)  {
       <button onClick={handleSidebarToggle} className="toggle-button">
         ☰
       </button>
-      <Sidebar open={sidebarOpen} />
+      <Sidebar open={sidebarOpen} 
+      setLocation={setLocation} 
+      fetchWeatherData={fetchWeatherData} 
+      fetchWeatherHoursData={fetchWeatherHoursData} />
     </div>
       </div>
-      <StarIcon isAuth={isAuth} location={location} />
+      <StarIcon 
+      isAuth={isAuth} 
+      location={location}
+      hasError={hasError} 
+      />
       <div className="search">
         <input
           value={inputLocation}
