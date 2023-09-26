@@ -5,7 +5,110 @@
   margin: 0;
   padding: 0;
 }
- 
+
+
+
+/*-------------- responsive setting ----------------------*/
+@media (max-width: 600px) {
+
+  .search input{
+    position: relative;
+    width: 60%;
+    font-size: 12px;
+    margin-top: -20px;
+    margin-left: 10px;
+  }
+
+  .search {
+    margin-top: -20px;
+    margin: 0;
+  }
+
+  .temp {
+    position: relative;
+    top: 170px;
+    left: 60px;
+  }
+
+  .temp  h1{
+    font-size: 40px;
+    margin-left: 80px;
+  }
+
+  .description {
+  left: 250px;
+  margin-top: 240px;
+  }
+
+  .description p {
+    font-size: 20px;
+    margin-top: -90px;
+    margin-left: 40px;
+  }
+  
+  .tempbox {
+    position: relative;
+    left: 153px;
+    top: -12px;
+  }
+
+  .tempbox p {
+    font-size: 15px;
+  }
+  
+  .bottom {
+    margin-top: -300px !important;
+  }
+
+  .bottom p {
+    font-size: 15px;
+  }
+
+  .feel p {
+    white-space: nowrap;
+  }
+
+  .bottom > div:not(:last-child) {
+    margin-right: 50px;
+  }
+
+  .DescriptionData  {
+    font-size: 15px;
+    margin-left: 40px;
+    height: 120px;
+    margin-top: -20px;
+    font-size: 13px;
+    overflow-x: auto; /* 横方向のオーバーフローをスクロール可能に */
+    overflow-y: hidden; /* 縦方向のオーバーフローは非表示に */
+    white-space: nowrap; /* コンテンツが次の行に折り返さないように */
+  
+  }
+
+  .location {
+    position: relative;
+    top: 110px;
+    left: 150px;
+  }
+
+  .flex-container {
+    left: 80px;
+    display: flex;
+  }
+  
+ .future-flex-container-all{
+    margin-left: -560px;
+    font-size: smaller;
+    gap: 3px;
+
+  }
+  
+  .future-DescriptionData h3 {
+    margin-left: -560px;
+    font-size: 15px;
+  }
+}
+/*----------------------------------------------------------*/
+
 body {
   margin: 0;
   overflow-y: hidden;
@@ -15,6 +118,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+    background-color: rgba(26, 26, 26, 0.192);
 }
 
 p {
@@ -43,7 +147,7 @@ h1 {
 
 .app .search {
   text-align: center;
-  padding: 1rem;
+  
 }
 
 .app input {
@@ -132,6 +236,7 @@ h1 {
 }
 
 .location {
+  margin: 0;
   margin-top: -330px;
 }
 
@@ -186,3 +291,4 @@ h1 {
     top: 20px;
     
 }
+
