@@ -16,13 +16,11 @@ import { ThreeDots } from 'react-loader-spinner';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from "axios";
 import Sidebar from './Sidebar';
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import "./firebase"
 import { auth } from "./firebase";
 import StarIcon from "./StarIcon";
-import FavoriteList from "./FavoriteList";
 
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
@@ -285,12 +283,12 @@ async function fetchWeatherHoursData(query, todayStr)  {
     <div className="app">
       {isLoading ? (
         <div className="Loading">
-           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
             <ThreeDots type="ThreeDots" color="#00BFFF" height={120} width={120} />
             </div>
         </div>
       ):(
-        <img className="bg-img" src={getSetBkImg()} />
+        <div className="bg-img" style={{ backgroundImage: `url(${getSetBkImg()})` }}></div>
       )}
       <div>
       <div className="Bar">
@@ -365,7 +363,6 @@ async function fetchWeatherHoursData(query, todayStr)  {
             </p>
           </div>
         </div>
-        <div> 
         <div className="DescriptionData">
         <h3>3時間ごとの天気</h3>
         <div className="flex-container-all"> 
@@ -376,7 +373,6 @@ async function fetchWeatherHoursData(query, todayStr)  {
             <span>{getWeatherIcon(data.weather[0].description)}</span>
           </div>
         ))}
-      </div>
       </div>
       </div>
       </div>
