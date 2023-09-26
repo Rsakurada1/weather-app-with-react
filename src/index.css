@@ -11,6 +11,19 @@
 /*-------------- responsive setting ----------------------*/
 @media (max-width: 600px) {
 
+  html, body{
+    margin: 0;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+
+  .bg-img{
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+
   .search input{
     position: relative;
     width: 60%;
@@ -26,18 +39,18 @@
 
   .temp {
     position: relative;
-    top: 170px;
-    left: 60px;
+    top: 160px;
+    left: 40px;
   }
 
   .temp  h1{
-    font-size: 40px;
+    font-size: 50px;
     margin-left: 80px;
   }
 
   .description {
   left: 250px;
-  margin-top: 240px;
+  margin-top: 230px;
   }
 
   .description p {
@@ -48,8 +61,8 @@
   
   .tempbox {
     position: relative;
-    left: 153px;
-    top: -12px;
+    left: 145px;
+    top: -10px;
   }
 
   .tempbox p {
@@ -78,16 +91,22 @@
     height: 120px;
     margin-top: -20px;
     font-size: 13px;
+    overflow-x: hidden;
+  
+  }
+  
+  .flex-container-all {
     overflow-x: auto; /* 横方向のオーバーフローをスクロール可能に */
     overflow-y: hidden; /* 縦方向のオーバーフローは非表示に */
     white-space: nowrap; /* コンテンツが次の行に折り返さないように */
-  
+    width: 100%; /* 追加: flex-container-allの幅を親要素に合わせる */
+    box-sizing: border-box; /* 追加: paddingやborderがwidthに含まれるように */
   }
 
   .location {
     position: relative;
     top: 110px;
-    left: 150px;
+    left: 130px;
   }
 
   .flex-container {
@@ -143,6 +162,8 @@ h1 {
   top: 0;
   left: 0;
   z-index: -1;
+  background-size: cover; 
+  background-position: center; 
 }
 
 .app .search {

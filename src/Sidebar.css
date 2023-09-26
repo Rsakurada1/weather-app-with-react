@@ -1,3 +1,23 @@
+
+/* -------responsive---------- */
+
+@media (max-width: 600px) {
+
+  .sidebar.open {
+    z-index: 1;
+  }
+
+}
+
+
+
+/* --------------------------- */
+
+
+
+
+
+
 .toggle-button {
     font-size: 30px;
     cursor: pointer;

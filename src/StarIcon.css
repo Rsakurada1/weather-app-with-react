@@ -3,8 +3,10 @@
 @media (max-width: 600px) {
     
     .star {
-        margin-left: -250px;
-        margin-top: -50px;
+        position: relative;
+        top: 6px;
+        right: 260px;
+        z-index: 1;
     }
 
     
