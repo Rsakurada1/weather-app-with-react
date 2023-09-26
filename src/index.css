@@ -108,6 +108,12 @@ h1 {
   
 }
 
+.description p {
+  word-break: break-word;
+  white-space: normal;
+
+}
+
 .bold {
   font-weight: 700;
 }
