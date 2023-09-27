@@ -117,7 +117,7 @@ const getTimeDay = () => {
 function App() {
   const [ data, setData ] = useState({});
   const [ location, setLocation ] = useState("tokyo");
-  const [validLocation, setValidLocation] = useState("tokyo");
+  const [ searchCounter, setSearchCounter ] = useState(false);
   const [ api, setApi ] = useState("");
   const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
@@ -184,12 +184,18 @@ async function fetchWeatherHoursData(query, todayStr)  {
   }, [location]);
 
   useEffect(() => {
-    console.log("App.js Location:", location);
-  }, [location]);
+    console.log("★App:検索カウンター情報", searchCounter);
+  }, [searchCounter]);
+
+  useEffect(() => {
+    console.log("★App:エラー情報", hasError);
+  }, [hasError]);
+
 
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
-      setHasError(false); // エラー状態をリセット
+      setSearchCounter((prev) => !prev);
+      setHasError(false); 
       const today = new Date();
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
       try {
@@ -197,11 +203,12 @@ async function fetchWeatherHoursData(query, todayStr)  {
           fetchWeatherData(inputLocation),
           fetchWeatherHoursData(inputLocation, todayStr)
         ]);
-        setLocation(inputLocation); // 両方の非同期処理が完了した後にlocationを更新
+        setLocation(inputLocation); // 検索が成功した場合のみlocationを更新
         setInputLocation("");
       } catch (e) {
         console.error("Error fetching weather data:", e);
         setHasError(true);
+        // locationの更新は行わない
         alert("有効な地域名を入力してください");
       }
     }
@@ -314,7 +321,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
       <StarIcon 
       isAuth={isAuth} 
       location={location}
-      data={data}
+      searchCounter={searchCounter}
       hasError={hasError} 
       />
       <div className="search">

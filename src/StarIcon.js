@@ -6,24 +6,41 @@ import { auth, db } from './firebase';
 
 
 
-const StarIcon = ( {isAuth, location, hasError, data} ) => {
+const StarIcon = ( {isAuth, location, hasError, searchCounter} ) => {
     const [ isFavorite, setIsFavorite] = useState(false);
 
     const userId = auth.currentUser ? auth.currentUser.uid : null;
 
     useEffect(() => {
-      if (isAuth) {
-        console.log("★StarIcon_setLocation情報",location)
-        const checkFavorite = async () => {
+      console.log("★StarIcon:検索カウンター情報", searchCounter);
+    }, [searchCounter]);
+
+    useEffect(() => {
+      console.log("★StarIcon:お気に入りリスト情報", isFavorite);
+    }, [searchCounter]);
+
+    useEffect(() => {
+      console.log("★StarIcon:エラー情報", hasError);
+    }, [hasError]);
+
+    useEffect(() => {
+      const checkFavorite = async () => {
+          if (hasError) return;
+          
           const q = query(collection(db, "users", userId, "favorites"), where("Location", "==", location));
           const querySnapshot = await getDocs(q);
           setIsFavorite(!querySnapshot.empty);
-        };
+      };
+      
+      if (isAuth && location && !hasError) {
           checkFavorite();
+      } else if (hasError) {
+          // 検索エラーが発生しても、isFavoriteの状態は変更しない
+          return;
       } else {
           setIsFavorite(false);
       }
-  }, [location, isAuth]);
+  }, [location, isAuth, hasError, searchCounter]);
 
     //お気に入りリストへの追加処理
     
