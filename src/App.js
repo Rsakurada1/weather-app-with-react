@@ -328,12 +328,12 @@ async function fetchWeatherHoursData(query, todayStr)  {
         <div className="description">
           {hasError ? (
             <div>
-              <p>
+              <p className="description-p">
                {data.weather && data.weather.length > 0
               ? translateweatherDescription(data.weather[0].description)
               : "Loading..."}
               </p>
-            <p>入力した地域は対応しておりません。</p>
+            <p className="location-error">入力した地域は対応しておりません。</p>
             </div>
           ) : (
           <p>
