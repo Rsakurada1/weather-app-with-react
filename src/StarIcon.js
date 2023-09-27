@@ -8,16 +8,17 @@ import { auth, db } from './firebase';
 
 const StarIcon = ( {isAuth, location, hasError, data} ) => {
     console.log("isAuth:", isAuth);
-    console.log("location初期値", location);
     const [ isFavorite, setIsFavorite] = useState(false);
+
+    const userId = auth.currentUser ? auth.currentUser.uid : null;
 
     useEffect(() => {
       if (isAuth) {
-          const checkFavorite = async () => {
-              const q = query(collection(db, "weather"), where("Location", "==", location));
-              const querySnapshot = await getDocs(q);
-              setIsFavorite(!querySnapshot.empty); 
-          };
+        const checkFavorite = async () => {
+          const q = query(collection(db, "users", userId, "favorites"), where("Location", "==", location));
+          const querySnapshot = await getDocs(q);
+          setIsFavorite(!querySnapshot.empty);
+        };
           checkFavorite();
       } else {
           setIsFavorite(false);
@@ -29,43 +30,34 @@ const StarIcon = ( {isAuth, location, hasError, data} ) => {
     const addFavLocation = async () => {
       if(hasError){
         console.log("haserrorチェック", hasError)
-        alert("有効な地域名を入力してください")
+        alert("正しく地域名を入力してください")
         return false;
       }
       try {
-        // APIリクエストで取得した正確な地名を使用してドキュメントを追加
-        const accurateLocationName = data.name;
-        
-        await addDoc(collection(db, "weather"), {
-          Location: accurateLocationName,
-          auther: {
-            username: auth.currentUser.displayName,
-            id: auth.currentUser.uid
-          }
+        await addDoc(collection(db, "users", userId, "favorites"), {
+          Location: location,
         });
         console.log('Document added');
-        return true;
+        setIsFavorite(true);
       } catch (e) {
         console.error('Error adding document: ', e);
-        return false;
       }
     };
         
         //お気に入りリストから該当する地域の削除
         const removeFavLocation = async () => {
           try {
-            const q = query(collection(db, "weather"), where("Location", "==", location));
+            const q = query(collection(db, "users", userId, "favorites"), where("Location", "==", location));
             const querySnapshot = await getDocs(q);
-        
-            querySnapshot.forEach((docSnapshot) => {
-              deleteDoc(doc(db, "weather", docSnapshot.id));
+            querySnapshot.forEach(async (docSnapshot) => {
+                console.log('Removing document with ID:', docSnapshot.id);
+                await deleteDoc(doc(db, "users", userId, "favorites", docSnapshot.id));
             });
-        
             console.log('Document removed');
           } catch (e) {
             console.error('Error removing document: ', e);
           }
-        };   
+        };
 
     const clickStar = async() => {
       if (!isAuth) {

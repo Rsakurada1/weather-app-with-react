@@ -182,7 +182,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
     );
   }, [location]);
 
-  //文字列の整理
+
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
       setSearchedLocation(inputLocation);
@@ -190,17 +190,21 @@ async function fetchWeatherHoursData(query, todayStr)  {
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
       try {
         await fetchWeatherData(inputLocation);
-        await fetchWeatherHoursData(inputLocation, todayStr);
         if (!hasError) {
-          setLocation(inputLocation);
-          setInputLocation("");
+          console.log("hasError確認", hasError)
+          await fetchWeatherHoursData(inputLocation, todayStr);
+          if (!hasError) {
+            setLocation(inputLocation);
+            setInputLocation("");
+          }
         }
       } catch (e) {
         console.error("Error fetching weather data:", e);
-        alert("有効な地域名を入力してください");
+        setHasError(true);
       }
     }
   };
+
   useEffect(() => {
     if (data && data.weather && data.weather.length > 0) {
       const newBkImg = getSetBkImg();
@@ -300,7 +304,9 @@ async function fetchWeatherHoursData(query, todayStr)  {
       <Sidebar open={sidebarOpen} 
       setLocation={setLocation} 
       fetchWeatherData={fetchWeatherData} 
-      fetchWeatherHoursData={fetchWeatherHoursData} />
+      fetchWeatherHoursData={fetchWeatherHoursData}
+      isAuth={isAuth}
+      />
     </div>
       </div>
       <StarIcon 

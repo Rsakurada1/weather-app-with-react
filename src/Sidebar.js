@@ -35,7 +35,8 @@ function Sidebar({ open, setLocation, fetchWeatherData, fetchWeatherHoursData })
       {isAuth ? (
         <>
         <button className='login-list' onClick={logoutInWithGoogle}>ログアウト</button>
-        <FavoriteList 
+        <FavoriteList
+        auth={auth} 
         onFavoriteClick={(location) => {
           setLocation(location);
           const today = new Date();

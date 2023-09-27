@@ -39,7 +39,7 @@
 
   .temp {
     position: relative;
-    top: 160px;
+    top: 40px;
     left: 40px;
   }
 
@@ -49,20 +49,19 @@
   }
 
   .description {
-  left: 250px;
-  margin-top: 230px;
+  position: relative;
+  top: -70px;
+  left: 280px;
   }
 
   .description .description-p {
     font-size: 20px;
-    margin-top: -90px;
-    margin-left: 40px;
   }
   
   .tempbox {
     position: relative;
     left: 145px;
-    top: -10px;
+    top: -30px;
   }
 
   .tempbox p {
@@ -70,7 +69,7 @@
   }
   
   .bottom {
-    margin-top: -300px !important;
+    margin-top: -315px !important;
   }
 
   .bottom p {
@@ -89,7 +88,7 @@
     font-size: 15px;
     margin-left: 40px;
     height: 120px;
-    margin-top: -20px;
+    margin-top: -50px;
     font-size: 13px;
     overflow-x: hidden;
   
@@ -105,7 +104,7 @@
 
   .location {
     position: relative;
-    top: 110px;
+    top: 40px;
     left: 130px;
   }
 
@@ -124,13 +123,14 @@
   .future-DescriptionData h3 {
     margin-left: -560px;
     font-size: 15px;
+    margin-top: -21px;
   }
 
   .location-error{
     position: relative;
     font-size: 5px;
     top: -160px;
-    right: 150px;
+    right: 180px;
   }
 }
 /*----------------------------------------------------------*/
