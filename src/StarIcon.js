@@ -6,7 +6,7 @@ import { auth, db } from './firebase';
 
 
 
-const StarIcon = ( {isAuth, location, hasError} ) => {
+const StarIcon = ( {isAuth, location, hasError, data} ) => {
     console.log("isAuth:", isAuth);
     console.log("location初期値", location);
     const [ isFavorite, setIsFavorite] = useState(false);
@@ -28,26 +28,28 @@ const StarIcon = ( {isAuth, location, hasError} ) => {
     
     const addFavLocation = async () => {
       if(hasError){
+        console.log("haserrorチェック", hasError)
         alert("有効な地域名を入力してください")
         return false;
       }
-        try {
-            await addDoc(collection(db, "weather"), {
-              Location: location,
-              auther: {
-                username: auth.currentUser.displayName,
-                id: auth.currentUser.uid
-              }
-            });
-            console.log('Document added');
-            return true;
-
-          } catch (e) {
-            console.error('Error adding document: ', e);
-            return false;
+      try {
+        // APIリクエストで取得した正確な地名を使用してドキュメントを追加
+        const accurateLocationName = data.name;
+        
+        await addDoc(collection(db, "weather"), {
+          Location: accurateLocationName,
+          auther: {
+            username: auth.currentUser.displayName,
+            id: auth.currentUser.uid
           }
-       
-        };
+        });
+        console.log('Document added');
+        return true;
+      } catch (e) {
+        console.error('Error adding document: ', e);
+        return false;
+      }
+    };
         
         //お気に入りリストから該当する地域の削除
         const removeFavLocation = async () => {
