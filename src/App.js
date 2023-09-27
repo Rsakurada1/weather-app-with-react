@@ -117,6 +117,7 @@ const getTimeDay = () => {
 function App() {
   const [ data, setData ] = useState({});
   const [ location, setLocation ] = useState("tokyo");
+  const [validLocation, setValidLocation] = useState("tokyo");
   const [ api, setApi ] = useState("");
   const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
@@ -182,25 +183,26 @@ async function fetchWeatherHoursData(query, todayStr)  {
     );
   }, [location]);
 
+  useEffect(() => {
+    console.log("App.js Location:", location);
+  }, [location]);
 
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
-      setSearchedLocation(inputLocation);
+      setHasError(false); // エラー状態をリセット
       const today = new Date();
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
       try {
-        await fetchWeatherData(inputLocation);
-        if (!hasError) {
-          console.log("hasError確認", hasError)
-          await fetchWeatherHoursData(inputLocation, todayStr);
-          if (!hasError) {
-            setLocation(inputLocation);
-            setInputLocation("");
-          }
-        }
+        await Promise.all([
+          fetchWeatherData(inputLocation),
+          fetchWeatherHoursData(inputLocation, todayStr)
+        ]);
+        setLocation(inputLocation); // 両方の非同期処理が完了した後にlocationを更新
+        setInputLocation("");
       } catch (e) {
         console.error("Error fetching weather data:", e);
         setHasError(true);
+        alert("有効な地域名を入力してください");
       }
     }
   };

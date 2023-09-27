@@ -7,13 +7,13 @@ import { auth, db } from './firebase';
 
 
 const StarIcon = ( {isAuth, location, hasError, data} ) => {
-    console.log("isAuth:", isAuth);
     const [ isFavorite, setIsFavorite] = useState(false);
 
     const userId = auth.currentUser ? auth.currentUser.uid : null;
 
     useEffect(() => {
       if (isAuth) {
+        console.log("★StarIcon_setLocation情報",location)
         const checkFavorite = async () => {
           const q = query(collection(db, "users", userId, "favorites"), where("Location", "==", location));
           const querySnapshot = await getDocs(q);
