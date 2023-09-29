@@ -12,23 +12,23 @@ function Sidebar({ open, setLocation, fetchWeatherData, fetchWeatherHoursData })
 
   const isAuth = localStorage.getItem("isAuth") === "true";
 
-    const loginInWithGoogle = () => {
-      //googleログイン処理
-      signInWithPopup(auth, provider).then((result) => {
-      }).catch((error) => {
-        if(error.code === 'auth/popup-closed-by-user') {
+  const loginInWithGoogle = () => {
+    //googleログイン処理
+    signInWithPopup(auth, provider).then((result) => {
+    }).catch((error) => {
+      if(error.code === 'auth/popup-closed-by-user') {
           alert('ログイン時に予期せぬエラーが発生しました。再度ログインをお試しください。');
-        };
-      });
-    };
+      };
+    });
+  };
   
-    const logoutInWithGoogle = () => {
-      auth.signOut().then(() => {
-        localStorage.removeItem("isAuth");
-        localStorage.removeItem('doNotShowMessage');
-        alert("ログアウトしました");
-      });
-    };
+  const logoutInWithGoogle = () => {
+    auth.signOut().then(() => {
+      localStorage.removeItem("isAuth");
+      localStorage.removeItem('doNotShowMessage');
+      alert("ログアウトしました");
+    });
+  };
 
   return (
     <div className={`sidebar ${open ? 'open' : ''}`}>

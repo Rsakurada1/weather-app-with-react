@@ -316,7 +316,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
       fetchWeatherHoursData={fetchWeatherHoursData}
       isAuth={isAuth}
       />
-    </div>
+      </div>
       </div>
       <StarIcon 
       isAuth={isAuth} 
