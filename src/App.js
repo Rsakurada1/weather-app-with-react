@@ -129,8 +129,6 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [ isAuth, setIsAuth ] = useState(false);
   const [inputLocation, setInputLocation] = useState("");
-  
- 
 
 
   async function fetchWeatherData (query) {
@@ -168,25 +166,12 @@ async function fetchWeatherHoursData(query, todayStr)  {
     setIsLoading(false);
   }
 };
-  //初期値を東京、文字列の整理
   useEffect(() => {
     const today = new Date();
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     fetchWeatherData("tokyo");
     fetchWeatherHoursData("tokyo", todayStr);
   }, []);
-
-  //検索した際に検索した地域のリクエスト
-  
-
-  useEffect(() => {
-    console.log("★App:検索カウンター情報", searchCounter);
-  }, [searchCounter]);
-
-  useEffect(() => {
-    console.log("★App:エラー情報", hasError);
-  }, [hasError]);
-
 
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
