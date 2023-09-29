@@ -28,11 +28,9 @@ const StarIcon = ( {isAuth, location, hasError, searchCounter} ) => {
     fetchFavorite();
   }, [location, userId]);
 
-    //お気に入りリストへの追加処理
-    
+  //お気に入りリストへの追加処理    
   const addFavLocation = async () => {
     if(hasError){
-      console.log("haserrorチェック", hasError)
       alert("正しく地域名を入力してください")
       return false;
     }
@@ -40,14 +38,14 @@ const StarIcon = ( {isAuth, location, hasError, searchCounter} ) => {
       await addDoc(collection(db, "users", userId, "favorites"), {
         Location: location,
     });
-      console.log('Document added');
+      //console.log('Document added');
       setIsFavorite(true);
     } catch (e) {
       console.error('Error adding document: ', e);
     }
   };
         
-        //お気に入りリストから該当する地域の削除
+  //お気に入りリストから該当する地域の削除
   const removeFavLocation = async () => {
     try {
       const q = query(collection(db, "users", userId, "favorites"), where("Location", "==", location));
