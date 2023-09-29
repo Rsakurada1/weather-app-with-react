@@ -22,10 +22,11 @@ import "./firebase"
 import { auth } from "./firebase";
 import StarIcon from "./StarIcon";
 
+//時間の文字列整理
 const filterTodayData = (data, todayStr) => {
   return data.filter(item => item.dt_txt.startsWith(todayStr));
 };
-
+//日付だけにする
 const filterFutureData = (data, todayStr) => {
   return data.filter(item => !item.dt_txt.startsWith(todayStr));
 };
@@ -60,6 +61,9 @@ const translateweatherDescription = (description) => {
     小霧雨を伴う雷雨: "雷雨",
     大霧雨を伴う雷雨: "雷雨",
     霧雨を伴う雷雨: "雷雨",
+    雷を伴う弱い雨: "雷雨",
+    雷を伴う雨: "雷雨",
+    雷を伴う強い雨 : "雷雨"
   };
   return translationMap[description] || description;
 };
