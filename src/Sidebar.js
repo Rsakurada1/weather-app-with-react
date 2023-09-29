@@ -1,10 +1,9 @@
 import React from 'react';
 import './Sidebar.css';
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import FavoriteList from './FavoriteList';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from './firebase';
 
 

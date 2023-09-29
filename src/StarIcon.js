@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import 'font-awesome/css/font-awesome.min.css';
 import "./StarIcon.css"
-import {  getFirestore, addDoc, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
 
 
-const StarIcon = ( {isAuth, location, hasError, searchCounter} ) => {
+const StarIcon = ( {isAuth, location, hasError} ) => {
   const [ isFavorite, setIsFavorite] = useState(false);
 
   const userId = auth.currentUser ? auth.currentUser.uid : null;
 
+  // hasErrorを依存配列に含めない理由：hasErrorがfalseになるとif以降の処理が進むのでいれない
   useEffect(() => {
     const fetchFavorite = async () => {
       if(hasError){
@@ -26,6 +27,7 @@ const StarIcon = ( {isAuth, location, hasError, searchCounter} ) => {
     };
       
     fetchFavorite();
+    //依存配列にhasError入れない
   }, [location, userId]);
 
   //お気に入りリストへの追加処理    

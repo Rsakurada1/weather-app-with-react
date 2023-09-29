@@ -122,17 +122,13 @@ function App() {
   const [ data, setData ] = useState({});
   const [ location, setLocation ] = useState("tokyo");
   const [ searchCounter, setSearchCounter ] = useState(false);
-  const [ api, setApi ] = useState("");
-  const [ BkImg, setBkImg ] = useState({});
   const [ isLoading, setIsLoading ] = useState(true);
   const [ hasError, setHasError ] = useState(false);
   const [ hourlyData, setHourlyData ] = useState({today: [], future: []});
-  const [ todayData, setTodayData ] = useState(null);
   const [ uniqueDates, setUniqueDates ] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [ isAuth, setIsAuth ] = useState(false);
   const [inputLocation, setInputLocation] = useState("");
-  const [searchedLocation, setSearchedLocation] = useState(null);
   
  
 
@@ -144,7 +140,7 @@ function App() {
         `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
       );
       setData(res.data);
-      setTodayData(res.data);
+      
       setHasError(false);
       setIsLoading(false);
     } catch (e) {
@@ -181,11 +177,7 @@ async function fetchWeatherHoursData(query, todayStr)  {
   }, []);
 
   //検索した際に検索した地域のリクエスト
-  useEffect(() => {
-    setApi(
-      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=37a68e1a7debd2495d0e17b1d525cd13&lang=ja`
-    );
-  }, [location]);
+  
 
   useEffect(() => {
     console.log("★App:検索カウンター情報", searchCounter);
@@ -217,13 +209,6 @@ async function fetchWeatherHoursData(query, todayStr)  {
       }
     }
   };
-
-  useEffect(() => {
-    if (data && data.weather && data.weather.length > 0) {
-      const newBkImg = getSetBkImg();
-      setBkImg(newBkImg);
-    }
-  }, [data]);
 
   useEffect(() => {
     const newUniqueDates = [];
